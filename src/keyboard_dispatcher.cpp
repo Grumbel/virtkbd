@@ -16,16 +16,16 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "virtualkeyboard/keyboard_dispatcher.hpp"
+#include "keyboard_dispatcher.hpp"
 
 #include <linux/input.h>
 #include <functional>
 
 #include <uinpp/uinput.hpp>
+#include <logmich/log.hpp>
 
-#include "log.hpp"
-#include "virtualkeyboard/keyboard_description.hpp"
-#include "virtualkeyboard/virtual_keyboard.hpp"
+#include "keyboard_description.hpp"
+#include "virtual_keyboard.hpp"
 
 using namespace std::placeholders;
 
@@ -54,7 +54,6 @@ KeyboardDispatcher::KeyboardDispatcher(VirtualKeyboard& gui_keyboard,
 void
 KeyboardDispatcher::on_key(const Key& key, bool pressed)
 {
-  log_tmp("emitting: " << key.get_code() << " " << pressed);
   m_emitter[key.get_code()]->send(pressed);
   m_uinput.sync();
 }

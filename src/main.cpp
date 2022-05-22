@@ -25,11 +25,10 @@
 
 #include <uinpp/uinput.hpp>
 
-#include "log.hpp"
 #include "status_icon.hpp"
-#include "virtualkeyboard/virtual_keyboard.hpp"
-#include "virtualkeyboard/keyboard_dispatcher.hpp"
-#include "virtualkeyboard/keyboard_controller.hpp"
+#include "virtual_keyboard.hpp"
+#include "keyboard_dispatcher.hpp"
+#include "keyboard_controller.hpp"
 
 int main(int argc, char** argv)
 {

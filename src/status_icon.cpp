@@ -16,12 +16,12 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "virtualkeyboard/status_icon.hpp"
+#include "status_icon.hpp"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
 
-#include "virtualkeyboard/virtualkeyboard_png.h"
+#include "virtualkeyboard_png.h"
 
 #pragma GCC diagnostic ignored "-Wold-style-cast"
 

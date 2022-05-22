@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "virtualkeyboard/keyboard_controller.hpp"
+#include "keyboard_controller.hpp"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -27,8 +27,8 @@
 
 #include <uinpp/uinput.hpp>
 
-#include "log.hpp"
-#include "virtualkeyboard/virtual_keyboard.hpp"
+#include <logmich/log.hpp>
+#include "virtual_keyboard.hpp"
 
 KeyboardController::KeyboardController(VirtualKeyboard& keyboard, UInput& uinput,
                                        const std::string& device) :
@@ -87,7 +87,6 @@ KeyboardController::~KeyboardController()
 void
 KeyboardController::parse(const struct input_event& ev)
 {
-  //log_tmp(ev.type << " " << ev.code << " " << ev.value);
   if (ev.type == EV_ABS)
   {
     if (ev.code == ABS_HAT0X)
@@ -178,18 +177,15 @@ KeyboardController::parse(const struct input_event& ev)
         break;
 
       case kShiftButton:
-        log_tmp("Shift: " << ev.value);
         m_shift_key->send(ev.value);
         m_keyboard.set_shift_mode(ev.value);
         break;
 
       case kCtrlButton:
-        log_tmp("Ctrl: " << ev.value);
         m_ctrl_key->send(ev.value);
         break;
 
       case kBackspaceButton:
-        log_tmp("Backspace: " << ev.value);
         m_backspace_key->send(ev.value);
         break;
 

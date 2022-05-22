@@ -16,7 +16,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "virtualkeyboard/virtual_keyboard.hpp"
+#include "virtual_keyboard.hpp"
 
 #include <gdk/gdkkeysyms.h>
 #include <iostream>
