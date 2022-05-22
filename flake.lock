@@ -8,7 +8,9 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "tinycmmc": "tinycmmc"
+        "tinycmmc": [
+          "tinycmmc"
+        ]
       },
       "locked": {
         "lastModified": 1647119910,
@@ -89,7 +91,7 @@
         "logmich": "logmich",
         "nixpkgs": "nixpkgs",
         "strutcpp": "strutcpp",
-        "tinycmmc": "tinycmmc_2",
+        "tinycmmc": "tinycmmc",
         "uinpp": "uinpp"
       }
     },
@@ -120,31 +122,6 @@
       }
     },
     "tinycmmc": {
-      "inputs": {
-        "flake-utils": [
-          "argparser",
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "argparser",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1647094963,
-        "narHash": "sha256-8FzS0dq3yvzWxO5vjTC5B7xJIflAdVIunQXNpvrq0fM=",
-        "owner": "grumbel",
-        "repo": "cmake-modules",
-        "rev": "84c8ed49605d46d58e6a5dd4e3427a5aa2f32a17",
-        "type": "gitlab"
-      },
-      "original": {
-        "owner": "grumbel",
-        "repo": "cmake-modules",
-        "type": "gitlab"
-      }
-    },
-    "tinycmmc_2": {
       "inputs": {
         "flake-utils": [
           "flake-utils"
@@ -186,10 +163,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1653220819,
+        "lastModified": 1653222498,
         "narHash": "sha256-c6MPL5W8hp+99/5Q6K3WItsf9aWnuFCPSWD0wOAr4Ks=",
         "ref": "refs/heads/master",
-        "rev": "d5249f51cab2f313afc67b970e228c66be3e07fd",
+        "rev": "1af9dabd9bae92adc830d91c85c25155d085b436",
         "revCount": 30,
         "type": "git",
         "url": "file:///home/ingo/projects/uinpp/trunk/"

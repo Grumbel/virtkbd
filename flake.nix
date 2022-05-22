@@ -1,17 +1,18 @@
 {
-  description = "Virtual KEyboard";
+  description = "Virtual on-screen keyboard";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
     flake-utils.url = "github:numtide/flake-utils";
 
-    argparser.url = "gitlab:argparser/argparser/stable";
-    argparser.inputs.nixpkgs.follows = "nixpkgs";
-    argparser.inputs.flake-utils.follows = "flake-utils";
-
     tinycmmc.url = "gitlab:grumbel/cmake-modules";
     tinycmmc.inputs.nixpkgs.follows = "nixpkgs";
     tinycmmc.inputs.flake-utils.follows = "flake-utils";
+
+    argparser.url = "gitlab:argparser/argparser/stable";
+    argparser.inputs.nixpkgs.follows = "nixpkgs";
+    argparser.inputs.flake-utils.follows = "flake-utils";
+    argparser.inputs.tinycmmc.follows = "tinycmmc";
 
     strutcpp.url = "gitlab:grumbel/strutcpp";
     strutcpp.inputs.nixpkgs.follows = "nixpkgs";
@@ -36,12 +37,23 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        version_file = pkgs.lib.fileContents ./VERSION;
+        project_has_version = ((builtins.substring 0 1) version_file) == "v";
+        project_version = if !project_has_version
+                          then ("0.0.0-${nixpkgs.lib.substring 0 8 self.lastModifiedDate}-${self.shortRev or "dirty"}")
+                          else (builtins.substring 1 ((builtins.stringLength version_file) - 2) version_file);
       in rec {
         packages = flake-utils.lib.flattenTree {
-          virtualkeyboard = pkgs.stdenv.mkDerivation {
-            pname = "virtualkeyboard";
-            version = "0.9.0";
+          virtkbd = pkgs.stdenv.mkDerivation rec {
+            pname = "virtkbd";
+            version = project_version;
             src = nixpkgs.lib.cleanSource ./.;
+            postPatch = ''
+                if ${if project_has_version then "false" else "true"}; then
+                  echo "${version}" > VERSION
+                fi
+            '';
+            cmakeFlags = [ "-DWARNINGS=ON" "-DWERROR=ON" ];
             nativeBuildInputs = [
               pkgs.cmake
               pkgs.pkg-config
@@ -51,33 +63,27 @@
               logmich.defaultPackage.${system}
               strutcpp.defaultPackage.${system}
               uinpp.defaultPackage.${system}
+              tinycmmc.defaultPackage.${system}
 
+              pkgs.gtk3
+
+              # indirect dependencies that pkg-config complains about
               pkgs.at-spi2-core
-              pkgs.bluez
               pkgs.dbus-glib
               pkgs.epoxy
-              pkgs.fmt
-              pkgs.glib
               pkgs.gobject-introspection
-              pkgs.gtest
-              pkgs.gtk3
               pkgs.libdatrie
               pkgs.libselinux
               pkgs.libsepol
               pkgs.libthai
-              pkgs.libudev
-              pkgs.libusb1
               pkgs.libxkbcommon
               pkgs.pcre
-              pkgs.python3
-              pkgs.python3Packages.dbus-python
               pkgs.util-linux
-              pkgs.xorg.libX11
               pkgs.xorg.libXdmcp
               pkgs.xorg.libXtst
             ];
           };
         };
-        defaultPackage = packages.virtualkeyboard;
+        defaultPackage = packages.virtkbd;
       });
 }

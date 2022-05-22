@@ -1,4 +1,4 @@
-# Xbox360 USB Gamepad Userspace Driver
+# virtkbd - Virtual On-Screen Keyboard
 # Copyright (C) 2015 Ingo Ruhnke <grumbel@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,44 +15,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.14)
-project(virtualkeyboard)
+project(virtkbd)
 
-option(BUILD_TESTS "Build tests" OFF)
-option(WARNINGS "Switch on extra warnings" OFF)
-option(WERROR "Turn warnings into errors" OFF)
+# Modules
+set(TINYCMMC_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/external/cmake-modules/modules/")
+find_package(tinycmmc CONFIG)
+message(STATUS "tinycmmc module path: ${TINYCMMC_MODULE_PATH}")
+list(APPEND CMAKE_MODULE_PATH ${TINYCMMC_MODULE_PATH})
 
 include(GNUInstallDirs)
+include(MaximumWarnings)
+include(GetProjectVersion)
+message(STATUS "Version: ${PROJECT_NAME} ${PROJECT_VERSION}")
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-if(WARNINGS)
-  set(WARNINGS_CXX_FLAGS ${WARNINGS_CXX_FLAGS}
-    -pedantic -Wall -Wextra -Wno-c++0x-compat -Wnon-virtual-dtor -Weffc++
-    -Wshadow -Wcast-qual -Winit-self -Wno-unused-parameter
-    -Wconversion -Wno-sign-conversion)
-  # -Winline -Wfloat-equal -Wunreachable-code
-endif()
-
-if(WERROR)
-  set(WARNINGS_CXX_FLAGS ${WARNINGS_CXX_FLAGS}
-    -Werror)
-endif()
-
-set(XBOXDRV_BINDIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Install location for executables")
-set(XBOXDRV_MANDIR "${CMAKE_INSTALL_PREFIX}/share/man" CACHE PATH "Install location for datafiles")
-
-find_package(Threads REQUIRED)
-find_package(X11 REQUIRED)
-
+# Dependencies
 find_package(PkgConfig)
-find_package(Python REQUIRED)
-find_package(fmt REQUIRED)
 pkg_search_module(GTK REQUIRED gtk+-3.0 IMPORTED_TARGET)
-pkg_search_module(USB REQUIRED libusb-1.0 IMPORTED_TARGET)
-pkg_search_module(UDEV REQUIRED libudev IMPORTED_TARGET)
-pkg_search_module(DBUSGLIB REQUIRED dbus-glib-1 IMPORTED_TARGET)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src)
 
@@ -75,24 +53,24 @@ function(build_dependencies)
 endfunction()
 build_dependencies()
 
-file(GLOB VIRTUALKEYBOARD_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+# Program
+file(GLOB VIRTKBD_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   src/*.cpp)
-add_executable(virtualkeyboard ${VIRTUALKEYBOARD_SOURCES_CXX})
-set_target_properties(virtualkeyboard PROPERTIES
+add_executable(virtkbd ${VIRTKBD_SOURCES_CXX})
+target_compile_options(virtkbd PRIVATE ${WARNINGS_CXX_FLAGS} -Wno-deprecated-declarations)
+set_target_properties(virtkbd PROPERTIES
   CXX_STANDARD 20
   CXX_STANDARD_REQUIRED ON
   CXX_EXTENSIONS OFF)
-target_link_libraries(virtualkeyboard
+target_link_libraries(virtkbd
   logmich::logmich
   argparser::argparser
   uinpp::uinpp
   PkgConfig::GTK)
 
-install(
-  TARGETS virtualkeyboard
-  RUNTIME DESTINATION ${XBOXDRV_BINDIR})
-install(
-  FILES doc/xboxdrv.1 doc/virtualkeyboard.1
-  DESTINATION ${XBOXDRV_MANDIR}/man1)
+install(TARGETS virtkbd
+  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+install(FILES doc/virtkbd.1
+  DESTINATION "${CMAKE_INSTALL_MANDIR}/man1")
 
 # EOF #
