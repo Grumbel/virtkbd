@@ -84,22 +84,22 @@ public:
     m_alt_label(alt_label)
   {}
 
-  int get_code() const { return m_code; }
+  int get_code() const override { return m_code; }
 
-  int get_x() const { return m_x; }
-  int get_y() const { return m_y; }
+  int get_x() const override { return m_x; }
+  int get_y() const override { return m_y; }
 
-  int get_xspan() const { return m_xspan; }
-  int get_yspan() const { return m_yspan; }
+  int get_xspan() const override { return m_xspan; }
+  int get_yspan() const override { return m_yspan; }
 
-  Style get_style() const { return m_style; }
+  Style get_style() const override { return m_style; }
 
-  std::string get_label() const { return m_label; }
-  std::string get_shift_label() const { return m_shift_label; }
-  std::string get_alt_label() const { return m_alt_label; }
+  std::string get_label() const override { return m_label; }
+  std::string get_shift_label() const override { return m_shift_label; }
+  std::string get_alt_label() const override { return m_alt_label; }
 
-  bool is_ref_key() const { return false; }
-  Key* get_parent() { return this; }
+  bool is_ref_key() const override { return false; }
+  Key* get_parent() override { return this; }
 };
 
 class ReferenceKey : public Key
@@ -113,22 +113,22 @@ public:
   {
   }
 
-  int get_code() const { return m_key->get_code(); }
+  int get_code() const override { return m_key->get_code(); }
 
-  int get_x() const { return m_key->get_x(); }
-  int get_y() const { return m_key->get_y(); }
+  int get_x() const override { return m_key->get_x(); }
+  int get_y() const override { return m_key->get_y(); }
 
-  int get_xspan() const { return m_key->get_xspan(); }
-  int get_yspan() const { return m_key->get_yspan(); }
+  int get_xspan() const override { return m_key->get_xspan(); }
+  int get_yspan() const override { return m_key->get_yspan(); }
 
-  Style get_style() const { return m_key->get_style(); }
+  Style get_style() const override { return m_key->get_style(); }
 
-  std::string get_label() const { return m_key->get_label(); }
-  std::string get_shift_label() const { return m_key->get_shift_label(); }
-  std::string get_alt_label() const { return m_key->get_alt_label(); }
+  std::string get_label() const override { return m_key->get_label(); }
+  std::string get_shift_label() const override { return m_key->get_shift_label(); }
+  std::string get_alt_label() const override { return m_key->get_alt_label(); }
 
-  bool is_ref_key() const { return true; }
-  Key* get_parent() { return m_key; }
+  bool is_ref_key() const override { return true; }
+  Key* get_parent() override { return m_key; }
 
 private:
   ReferenceKey(const ReferenceKey&);

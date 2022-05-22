@@ -51,9 +51,9 @@ int advance(int pos, int width, int steps)
 
 VirtualKeyboard::VirtualKeyboard(KeyboardDescriptionPtr keyboard_desc) :
   m_keyboard(keyboard_desc),
-  m_window(0),
-  m_vbox(0),
-  m_drawing_area(0),
+  m_window(nullptr),
+  m_vbox(nullptr),
+  m_drawing_area(nullptr),
   m_key_width(48),
   m_key_height(48),
   m_shift_mode(false),
@@ -373,7 +373,7 @@ VirtualKeyboard::draw_centered_text(cairo_t* cr, double x, double y, const std::
 
   cairo_move_to(cr,
                 x - (extents.width)/2.0 - extents.x_bearing,
-                y + ((font_extents.descent + font_extents.ascent * 0.1f))/2.0);
+                y + ((font_extents.descent + font_extents.ascent * 0.1))/2.0);
   cairo_show_text(cr, str.c_str());
 }
 

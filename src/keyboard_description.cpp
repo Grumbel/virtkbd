@@ -200,7 +200,7 @@ KeyboardDescription::get_key(int x, int y) const
 void
 KeyboardDescription::set_key(int x, int y, Key* key)
 {
-  assert(m_keys[m_width * y + x] == 0);
+  assert(m_keys[m_width * y + x] == nullptr);
   //m_keys[m_width * y + x] = key;
 
   // mark the spots that a large key covers with ReferenceKey

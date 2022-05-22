@@ -36,7 +36,7 @@ KeyboardController::KeyboardController(VirtualKeyboard& keyboard, UInput& uinput
   m_uinput(uinput),
   m_device(device),
   m_fd(-1),
-  m_io_channel(0),
+  m_io_channel(nullptr),
   m_timeout_source(-1),
   m_stick_x(0),
   m_stick_y(0),
@@ -232,7 +232,7 @@ KeyboardController::on_read_data(GIOChannel* source, GIOCondition condition)
 {
   // read data
   struct input_event ev[128];
-  int rd = 0;
+  ssize_t rd = 0;
   while((rd = ::read(m_fd, ev, sizeof(struct input_event) * 128)) > 0)
   {
     for (size_t i = 0; i < rd / sizeof(struct input_event); ++i)
