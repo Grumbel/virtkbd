@@ -21,9 +21,9 @@
 #include <functional>
 #include <errno.h>
 
-#include <argparser/argparser.hpp>
+#include <argpp/argpp.hpp>
 
-#include <uinpp/uinput.hpp>
+#include <uinpp/multi_device.hpp>
 
 #include "status_icon.hpp"
 #include "virtual_keyboard.hpp"
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 
   gtk_init(&argc, &argv);
 
-  argparser::ArgParser argp;
+  argpp::Parser argp;
   argp.add_usage(argv[0], "[OPTION]...")
     .add_text("Virtual Keyboard");
 
@@ -69,7 +69,8 @@ int main(int argc, char** argv)
 
   if (!device.empty())
   {
-    UInput uinput(false);
+    uinpp::MultiDevice uinput;
+    uinput.set_extra_events(false);
     KeyboardDispatcher dispatcher(virtual_keyboard, uinput);
     KeyboardController controller(virtual_keyboard, uinput, device);
     uinput.finish();

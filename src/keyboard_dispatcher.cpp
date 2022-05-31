@@ -21,8 +21,8 @@
 #include <linux/input.h>
 #include <functional>
 
-#include <uinpp/uinput.hpp>
 #include <logmich/log.hpp>
+#include <uinpp/multi_device.hpp>
 
 #include "keyboard_description.hpp"
 #include "virtual_keyboard.hpp"
@@ -30,7 +30,7 @@
 using namespace std::placeholders;
 
 KeyboardDispatcher::KeyboardDispatcher(VirtualKeyboard& gui_keyboard,
-                                       UInput& uinput) :
+                                       uinpp::MultiDevice& uinput) :
   m_uinput(uinput),
   m_emitter(KEY_CNT)
 {

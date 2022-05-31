@@ -23,16 +23,16 @@
 #include <linux/input.h>
 #include <glib.h>
 
-#include <uinpp/ui_event_emitter.hpp>
+#include <uinpp/event_emitter.hpp>
+#include <uinpp/fwd.hpp>
 
 class VirtualKeyboard;
-class UInput;
 
 class KeyboardController
 {
 private:
   VirtualKeyboard& m_keyboard;
-  UInput& m_uinput;
+  uinpp::MultiDevice& m_uinput;
   std::string m_device;
   int m_fd;
   GIOChannel* m_io_channel;
@@ -57,12 +57,12 @@ private:
     kHideButton  = BTN_MODE
   };
 
-  UIEventEmitterPtr m_backspace_key;
-  UIEventEmitterPtr m_shift_key;
-  UIEventEmitterPtr m_ctrl_key;
+  uinpp::EventEmitter* m_backspace_key;
+  uinpp::EventEmitter* m_shift_key;
+  uinpp::EventEmitter* m_ctrl_key;
 
 public:
-  KeyboardController(VirtualKeyboard& keyboard, UInput& uinput, const std::string& device);
+  KeyboardController(VirtualKeyboard& keyboard, uinpp::MultiDevice& uinput, const std::string& device);
   ~KeyboardController();
 
   void parse(const struct input_event& ev);

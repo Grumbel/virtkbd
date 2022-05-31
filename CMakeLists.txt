@@ -36,9 +36,9 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/src)
 
 function(build_dependencies)
   set(BUILD_TESTS OFF)
-  find_package(argparser)
-  if(NOT TARGET argparser::argparser)
-    add_subdirectory(external/argparser/)
+  find_package(argpp)
+  if(NOT TARGET argpp::argpp)
+    add_subdirectory(external/argpp/)
   endif()
 
   find_package(uinpp)
@@ -64,7 +64,7 @@ set_target_properties(virtkbd PROPERTIES
   CXX_EXTENSIONS OFF)
 target_link_libraries(virtkbd
   logmich::logmich
-  argparser::argparser
+  argpp::argpp
   uinpp::uinpp
   PkgConfig::GTK)
 

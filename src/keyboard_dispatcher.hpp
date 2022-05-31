@@ -21,10 +21,9 @@
 
 #include <vector>
 
-#include <uinpp/ui_event_emitter.hpp>
+#include <uinpp/event_emitter.hpp>
 
 class Key;
-class UInput;
 class VirtualKeyboard;
 
 /** The KeyboardDispatcher receives key events from the
@@ -34,11 +33,11 @@ class VirtualKeyboard;
 class KeyboardDispatcher
 {
 private:
-  UInput& m_uinput;
-  std::vector<UIEventEmitterPtr> m_emitter;
+  uinpp::MultiDevice& m_uinput;
+  std::vector<uinpp::EventEmitter*> m_emitter;
 
 public:
-  KeyboardDispatcher(VirtualKeyboard& gui_keyboard, UInput& uinput);
+  KeyboardDispatcher(VirtualKeyboard& gui_keyboard, uinpp::MultiDevice& uinput);
   void on_key(const Key& key, bool pressed);
 };
 

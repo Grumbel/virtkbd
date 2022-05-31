@@ -2,29 +2,29 @@
   description = "Virtual on-screen keyboard";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
     flake-utils.url = "github:numtide/flake-utils";
 
-    tinycmmc.url = "gitlab:grumbel/cmake-modules";
+    tinycmmc.url = "github:grumbel/tinycmmc";
     tinycmmc.inputs.nixpkgs.follows = "nixpkgs";
     tinycmmc.inputs.flake-utils.follows = "flake-utils";
 
-    argparser.url = "gitlab:argparser/argparser/stable";
-    argparser.inputs.nixpkgs.follows = "nixpkgs";
-    argparser.inputs.flake-utils.follows = "flake-utils";
-    argparser.inputs.tinycmmc.follows = "tinycmmc";
+    argpp.url = "github:grumbel/argpp/stable";
+    argpp.inputs.nixpkgs.follows = "nixpkgs";
+    argpp.inputs.flake-utils.follows = "flake-utils";
+    argpp.inputs.tinycmmc.follows = "tinycmmc";
 
-    strutcpp.url = "gitlab:grumbel/strutcpp";
+    strutcpp.url = "github:grumbel/strutcpp";
     strutcpp.inputs.nixpkgs.follows = "nixpkgs";
     strutcpp.inputs.flake-utils.follows = "flake-utils";
     strutcpp.inputs.tinycmmc.follows = "tinycmmc";
 
-    logmich.url = "gitlab:logmich/logmich";
+    logmich.url = "github:logmich/logmich";
     logmich.inputs.nixpkgs.follows = "nixpkgs";
     logmich.inputs.flake-utils.follows = "flake-utils";
     logmich.inputs.tinycmmc.follows = "tinycmmc";
 
-    # uinpp.url = "gitlab:Grumbel/uinpp";
+    # uinpp.url = "github:Grumbel/uinpp";
     uinpp.url = "git+file:///home/ingo/projects/uinpp/trunk/";
     uinpp.inputs.nixpkgs.follows = "nixpkgs";
     uinpp.inputs.flake-utils.follows = "flake-utils";
@@ -33,7 +33,7 @@
     uinpp.inputs.tinycmmc.follows = "tinycmmc";
   };
 
-  outputs = { self, nixpkgs, flake-utils, argparser, tinycmmc, strutcpp, logmich, uinpp }:
+  outputs = { self, nixpkgs, flake-utils, argpp, tinycmmc, strutcpp, logmich, uinpp }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -59,7 +59,7 @@
               pkgs.pkg-config
             ];
             buildInputs = [
-              argparser.defaultPackage.${system}
+              argpp.defaultPackage.${system}
               logmich.defaultPackage.${system}
               strutcpp.defaultPackage.${system}
               uinpp.defaultPackage.${system}

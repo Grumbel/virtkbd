@@ -25,12 +25,12 @@
 #include <stdexcept>
 #include <math.h>
 
-#include <uinpp/uinput.hpp>
+#include <uinpp/multi_device.hpp>
 
 #include <logmich/log.hpp>
 #include "virtual_keyboard.hpp"
 
-KeyboardController::KeyboardController(VirtualKeyboard& keyboard, UInput& uinput,
+KeyboardController::KeyboardController(VirtualKeyboard& keyboard, uinpp::MultiDevice& uinput,
                                        const std::string& device) :
   m_keyboard(keyboard),
   m_uinput(uinput),
