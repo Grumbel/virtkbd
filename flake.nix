@@ -9,7 +9,7 @@
     tinycmmc.inputs.nixpkgs.follows = "nixpkgs";
     tinycmmc.inputs.flake-utils.follows = "flake-utils";
 
-    argpp.url = "github:grumbel/argpp/stable";
+    argpp.url = "github:grumbel/argpp?ref=stable";
     argpp.inputs.nixpkgs.follows = "nixpkgs";
     argpp.inputs.flake-utils.follows = "flake-utils";
     argpp.inputs.tinycmmc.follows = "tinycmmc";
@@ -24,8 +24,7 @@
     logmich.inputs.flake-utils.follows = "flake-utils";
     logmich.inputs.tinycmmc.follows = "tinycmmc";
 
-    # uinpp.url = "github:Grumbel/uinpp";
-    uinpp.url = "git+file:///home/ingo/projects/uinpp/trunk/";
+    uinpp.url = "github:Grumbel/uinpp";
     uinpp.inputs.nixpkgs.follows = "nixpkgs";
     uinpp.inputs.flake-utils.follows = "flake-utils";
     uinpp.inputs.strutcpp.follows = "strutcpp";
@@ -42,8 +41,8 @@
         project_version = if !project_has_version
                           then ("0.0.0-${nixpkgs.lib.substring 0 8 self.lastModifiedDate}-${self.shortRev or "dirty"}")
                           else (builtins.substring 1 ((builtins.stringLength version_file) - 2) version_file);
-      in rec {
-        packages = flake-utils.lib.flattenTree {
+      in {
+        packages = rec {
           virtkbd = pkgs.stdenv.mkDerivation rec {
             pname = "virtkbd";
             version = project_version;
@@ -59,11 +58,11 @@
               pkgs.pkg-config
             ];
             buildInputs = [
-              argpp.defaultPackage.${system}
-              logmich.defaultPackage.${system}
-              strutcpp.defaultPackage.${system}
-              uinpp.defaultPackage.${system}
-              tinycmmc.defaultPackage.${system}
+              argpp.packages.${system}.default
+              logmich.packages.${system}.default
+              strutcpp.packages.${system}.default
+              uinpp.packages.${system}.default
+              tinycmmc.packages.${system}.default
 
               pkgs.gtk3
 
@@ -83,7 +82,8 @@
               pkgs.xorg.libXtst
             ];
           };
+          default = virtkbd;
         };
-        defaultPackage = packages.virtkbd;
-      });
+      }
+    );
 }
