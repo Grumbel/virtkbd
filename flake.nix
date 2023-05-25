@@ -2,7 +2,7 @@
   description = "Virtual on-screen keyboard";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     flake-utils.url = "github:numtide/flake-utils";
 
     tinycmmc.url = "github:grumbel/tinycmmc";
@@ -16,12 +16,10 @@
 
     strutcpp.url = "github:grumbel/strutcpp";
     strutcpp.inputs.nixpkgs.follows = "nixpkgs";
-    strutcpp.inputs.flake-utils.follows = "flake-utils";
     strutcpp.inputs.tinycmmc.follows = "tinycmmc";
 
     logmich.url = "github:logmich/logmich";
     logmich.inputs.nixpkgs.follows = "nixpkgs";
-    logmich.inputs.flake-utils.follows = "flake-utils";
     logmich.inputs.tinycmmc.follows = "tinycmmc";
 
     uinpp.url = "github:Grumbel/uinpp";
@@ -43,46 +41,52 @@
                           else (builtins.substring 1 ((builtins.stringLength version_file) - 2) version_file);
       in {
         packages = rec {
+          default = virtkbd;
+
           virtkbd = pkgs.stdenv.mkDerivation rec {
             pname = "virtkbd";
             version = project_version;
-            src = nixpkgs.lib.cleanSource ./.;
+
+            src = ./.;
+
             postPatch = ''
                 if ${if project_has_version then "false" else "true"}; then
                   echo "${version}" > VERSION
                 fi
             '';
+
             cmakeFlags = [ "-DWARNINGS=ON" "-DWERROR=ON" ];
-            nativeBuildInputs = [
-              pkgs.cmake
-              pkgs.pkg-config
+
+            nativeBuildInputs = with pkgs; [
+              cmake
+              pkg-config
             ];
-            buildInputs = [
+
+            buildInputs = with pkgs; [
+              gtk3
+
+              # indirect dependencies that pkg-config complains about
+              at-spi2-core
+              dbus-glib
+              epoxy
+              gobject-introspection
+              libdatrie
+              libselinux
+              libsepol
+              libthai
+              libxkbcommon
+              pcre
+              util-linux
+              xorg.libXdmcp
+              xorg.libXtst
+            ] ++ [
               argpp.packages.${system}.default
               logmich.packages.${system}.default
               strutcpp.packages.${system}.default
               uinpp.packages.${system}.default
               tinycmmc.packages.${system}.default
-
-              pkgs.gtk3
-
-              # indirect dependencies that pkg-config complains about
-              pkgs.at-spi2-core
-              pkgs.dbus-glib
-              pkgs.epoxy
-              pkgs.gobject-introspection
-              pkgs.libdatrie
-              pkgs.libselinux
-              pkgs.libsepol
-              pkgs.libthai
-              pkgs.libxkbcommon
-              pkgs.pcre
-              pkgs.util-linux
-              pkgs.xorg.libXdmcp
-              pkgs.xorg.libXtst
             ];
           };
-          default = virtkbd;
         };
       }
     );
